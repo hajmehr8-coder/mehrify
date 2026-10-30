@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7e6f1">
+<title>Mehrify — Your Creative World</title>
+<style>
+:root{--pink:#f7e6f1;--pink2:#fbeff6;--lav:#d9c8f2;--deep:#795a9f;--ink:#34283d;--muted:#796d80;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:#fff9fc;color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:18px 18px 12px;background:linear-gradient(135deg,#f8e2ef,#e9ddfa);position:sticky;top:0;z-index:2}
+.brand{font-weight:850;font-size:25px;letter-spacing:1px;color:#8e5d91}.tag{font-size:12px;color:#785b91;margin-top:1px}
+main{max-width:760px;margin:auto;padding:16px 14px 34px}.intro{font-size:22px;font-weight:750;margin:6px 0 4px}.sub{color:var(--muted);font-size:13px;margin-bottom:16px}
+.panel{background:white;border:1px solid #f0e2ed;border-radius:20px;padding:14px;box-shadow:0 5px 18px #7b56850d;margin-bottom:14px}
+.actions{display:flex;gap:9px;flex-wrap:wrap}.btn{border:0;border-radius:14px;padding:12px 15px;font-weight:700;font-size:14px;background:#eee5f8;color:#684b85;cursor:pointer}.btn.primary{background:#916eae;color:white;flex:1}.btn:disabled{opacity:.45}
+.preview{width:100%;min-height:220px;max-height:48vh;object-fit:contain;background:#fbf5fa;border-radius:15px;display:block}
+.placeholder{min-height:220px;display:grid;place-items:center;text-align:center;color:#8b7297;background:#fbf5fa;border-radius:15px;padding:25px}
+.placeholder .emoji{font-size:42px;margin-bottom:8px}
+.tools-title{font-weight:750;margin:2px 0 12px}.control{margin:13px 0}.control-head{display:flex;justify-content:space-between;font-size:13px;margin-bottom:7px;color:#55465e}.control-head output{color:#8663a1;font-weight:700}
+input[type=range]{width:100%;accent-color:#9472b0}
+.filters{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.filter{padding:10px 5px;border:1px solid #eaddec;border-radius:12px;background:#fff9fd;color:#6b5575;font-weight:650;font-size:12px}.filter.active{background:#eee3f7;border-color:#a88ac2;color:#64477f}
+.note{font-size:12px;color:#817486;line-height:1.5}.footer{text-align:center;color:#9a879e;font-size:11px;padding:8px}
+input[type=file]{display:none}
+@media(min-width:620px){main{padding-top:24px}.workspace{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;align-items:start}.preview{max-height:65vh}}
+</style>
+</head>
+<body>
+<header><div class="brand">✦ MEHRIFY</div><div class="tag">Your Creative World · Photo Editor</div></header>
+<main>
+  <div class="intro">Make every photo feel magical ✨</div>
+  <div class="sub">A little creativity, a lot of magic.</div>
+  <div class="workspace">
+    <section class="panel">
+      <div id="previewWrap">
+        <div class="placeholder" id="placeholder"><div><div class="emoji">🌸</div><b>Your photo goes here</b><div class="note">Choose a picture from your phone to begin editing.</div></div></div>
+        <canvas id="canvas" class="preview" hidden></canvas>
+      </div>
+      <div class="actions" style="margin-top:12px">
+        <label class="btn primary" for="fileInput" style="text-align:center">＋ Choose Photo</label>
+        <input id="fileInput" type="file" accept="image/*">
+        <button class="btn" id="rotateBtn" disabled>↻ Rotate</button>
+        <button class="btn" id="resetBtn" disabled>Reset</button>
+      </div>
+      <div class="actions" style="margin-top:9px">
+        <button class="btn primary" id="saveBtn" disabled>↓ Save Edited Photo</button>
+      </div>
+      <p class="note">Your photo stays on your device in this first version. Nothing is uploaded.</p>
+    </section>
+    <section class="panel">
+      <div class="tools-title">Edit your photo</div>
+      <div class="control"><div class="control-head"><label for="brightness">Brightness</label><output id="brightnessVal">100%</output></div><input id="brightness" type="range" min="40" max="180" value="100"></div>
+      <div class="control"><div class="control-head"><label for="contrast">Contrast</label><output id="contrastVal">100%</output></div><input id="contrast" type="range" min="40" max="180" value="100"></div>
+      <div class="control"><div class="control-head"><label for="saturation">Saturation</label><output id="saturationVal">100%</output></div><input id="saturation" type="range" min="0" max="200" value="100"></div>
+      <div class="control"><div class="control-head"><label for="blur">Soft blur</label><output id="blurVal">0 px</output></div><input id="blur" type="range" min="0" max="8" value="0"></div>
+      <div class="tools-title" style="margin-top:20px">Aesthetic filters</div>
+      <div class="filters">
+        <button class="filter active" data-filter="none">Original</button>
+        <button class="filter" data-filter="soft">Soft Glow</button>
+        <button class="filter" data-filter="lavender">Lavender</button>
+        <button class="filter" data-filter="warm">Warm Film</button>
+        <button class="filter" data-filter="vintage">Vintage</button>
+        <button class="filter" data-filter="mono">B&amp;W</button>
+      </div>
+    </section>
+  </div>
+
+    <section class="panel">
+      <div class="tools-title">Beauty Studio ✨</div>
+      <p class="note">Gentle photo-wide beauty adjustments for this first version. These tools do not detect or reshape individual facial features.</p>
+      <div class="control"><div class="control-head"><label for="smooth">Skin softening</label><output id="smoothVal">0%</output></div><input id="smooth" type="range" min="0" max="70" value="0"></div>
+      <div class="control"><div class="control-head"><label for="glow">Soft glow</label><output id="glowVal">0%</output></div><input id="glow" type="range" min="0" max="60" value="0"></div>
+      <div class="control"><div class="control-head"><label for="warmth">Warmth</label><output id="warmthVal">0%</output></div><input id="warmth" type="range" min="0" max="40" value="0"></div>
+      <div class="control"><div class="control-head"><label for="pinkTone">Rosy tone</label><output id="pinkToneVal">0%</output></div><input id="pinkTone" type="range" min="0" max="35" value="0"></div>
+      <p class="note">Tip: use small amounts for a natural look. The rosy tone affects the whole photo, not just cheeks or lips.</p>
+    </section>
+  <div class="footer">Mehrify · Made with ♡ · Beauty Studio preview</div>
+</main>
+<script>
+const fileInput=document.getElementById('fileInput'),canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+const placeholder=document.getElementById('placeholder');
+const sliders=['brightness','contrast','saturation','blur','smooth','glow','warmth','pinkTone'];
+let img=null,rotation=0,filter='none';
+function hasPhoto(){return !!img}
+function draw(){
+ if(!img)return;
+ const maxW=1600,maxH=1600,scale=Math.min(1,maxW/img.width,maxH/img.height);
+ const w=Math.round(img.width*scale),h=Math.round(img.height*scale);
+ const sideways=Math.abs(rotation)%180===90;
+ canvas.width=sideways?h:w;canvas.height=sideways?w:h;
+ ctx.save();ctx.translate(canvas.width/2,canvas.height/2);ctx.rotate(rotation*Math.PI/180);
+ let b=+brightness.value,c=+contrast.value,s=+saturation.value,bl=+blur.value;
+ let extra='';
+ if(filter==='soft')extra=' sepia(8%)';
+ if(filter==='lavender')extra=' hue-rotate(12deg) saturate(115%)';
+ if(filter==='warm')extra=' sepia(22%) saturate(115%)';
+ if(filter==='vintage')extra=' sepia(32%) contrast(90%) saturate(80%)';
+ if(filter==='mono')extra=' grayscale(100%)';
+ ctx.filter=`brightness(${b}%) contrast(${c}%) saturate(${s}%) blur(${bl}px)${extra}`;
+ ctx.drawImage(img,-w/2,-h/2,w,h);ctx.restore();
+}
+fileInput.addEventListener('change',e=>{
+ const f=e.target.files&&e.target.files[0];if(!f)return;
+ if(!f.type.startsWith('image/')){alert('Please choose an image.');return}
+ const url=URL.createObjectURL(f);const im=new Image();
+ im.onload=()=>{img=im;rotation=0;sliders.forEach(id=>document.getElementById(id).value=({brightness:100,contrast:100,saturation:100,blur:0,smooth:0,glow:0,warmth:0,pinkTone:0})[id]);filter='none';document.querySelectorAll('.filter').forEach(x=>x.classList.toggle('active',x.dataset.filter==='none'));placeholder.hidden=true;canvas.hidden=false;['rotateBtn','resetBtn','saveBtn'].forEach(id=>document.getElementById(id).disabled=false);draw();URL.revokeObjectURL(url)};
+ im.onerror=()=>alert('Could not open that photo. Please try another one.');
+ im.src=url;
+});
+sliders.forEach(id=>document.getElementById(id).addEventListener('input',e=>{
+ const v=+e.target.value;document.getElementById(id+'Val').textContent=id==='blur'?v+' px':v+'%';draw();
+}));
+document.querySelectorAll('.filter').forEach(btn=>btn.addEventListener('click',()=>{filter=btn.dataset.filter;document.querySelectorAll('.filter').forEach(x=>x.classList.toggle('active',x===btn));draw()}));
+document.getElementById('rotateBtn').addEventListener('click',()=>{rotation=(rotation+90)%360;draw()});
+document.getElementById('resetBtn').addEventListener('click',()=>{sliders.forEach(id=>document.getElementById(id).value=({brightness:100,contrast:100,saturation:100,blur:0,smooth:0,glow:0,warmth:0,pinkTone:0})[id]);sliders.forEach(id=>document.getElementById(id+'Val').textContent=id==='blur'?'0 px':(id==='brightness'||id==='contrast'||id==='saturation'?'100%':'0%'));rotation=0;filter='none';document.querySelectorAll('.filter').forEach(x=>x.classList.toggle('active',x.dataset.filter==='none'));draw()});
+document.getElementById('saveBtn').addEventListener('click',()=>{if(!img)return;const a=document.createElement('a');a.download='mehrify-edited.png';a.href=canvas.toDataURL('image/png');a.click()});
+</script>
+</body>
+</html>
